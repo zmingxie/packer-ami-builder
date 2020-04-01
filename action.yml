@@ -1,0 +1,22 @@
+name: 'Packer AMI Builder'
+author: 'zmingxie'
+description: 'Use GitHub Action to execute Packer AMI build'
+branding:
+  color: 'blue'
+  icon: 'anchor'
+
+inputs:
+  templateFile:
+    description: 'Packer template file name'
+    required: true
+  varFile:
+    description: 'Optional user variables file'
+    required: false
+    default: NULL
+  workDir:
+    description: 'Working directory inside the container'
+    required: false
+    default: '.'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
