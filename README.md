@@ -1,17 +1,19 @@
 # Packer AMI Builder
-Use GitHub Action to execute Packer AMI build. This supports both HCL and JSON packer template files.
+Use GitHub Action to execute Packer build commands. This supports both HCL and
+JSON packer template files.
 
-For HCL Mode, set `templateFile` to `.` to read all `pkr.hcl` files within your working directory.
+For HCL Mode, set `packerArgs` to `build .` to load all `.pkr.hcl` files within
+the dir. To use the override variable file, set `packerArgs` to
+`build -var-file=overrides.pkrvars.hcl`
 
 ## Input Parameters
-| Name           | Description                            | Mandatory | Default |
-| -------------- | -------------------------------------- | --------- | ------- |
-| `templateFile` | Packer template file name              | Yes       |         |
-| `varFile`      | Optional user variables file           | No        | `NULL`  |
-| `workDir`      | Working directory inside the container | No        | `.`     |
+| Name         | Description                                              | Mandatory | Default |
+| ------------ | -------------------------------------------------------- | --------- | ------- |
+| `packerArgs` | Arguments that will be passed down to the packer command | Yes       |         |
+| `workDir`    | Working directory inside the container                   | No        | `.`     |
 
 ## Example
-Create a workflow file (`.github/workflows/ami-build.yaml`)like below:
+Create a workflow file (e.g `.github/workflows/ami-build.yaml`) like below:
 
 ```yaml
 name: Build an AMI using Packer
@@ -28,8 +30,7 @@ jobs:
       - name: Packer AMI Build
         uses: zmingxie/packer-ami-builder@master
         with:
-          templateFile: 'packer-template.json'
-          varFile: 'packer-vars.json'
+          packerArgs: 'build template.json'
           workDir: '.'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
